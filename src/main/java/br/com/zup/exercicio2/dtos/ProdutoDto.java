@@ -1,4 +1,4 @@
-package br.com.zup.exercicio2.Dtos;
+package br.com.zup.exercicio2.dtos;
 
 public class ProdutoDto {
 
