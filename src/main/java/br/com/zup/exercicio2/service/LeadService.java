@@ -1,10 +1,8 @@
 package br.com.zup.exercicio2.service;
 
 import br.com.zup.exercicio2.dtos.LeadDto;
-import br.com.zup.exercicio2.dtos.ProdutoDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -33,6 +31,16 @@ public class LeadService {
 
     public List<LeadDto> leadsCadastrados(){
         return leads;
+    }
+
+    public LeadDto buscarLead(String email){
+        for (LeadDto referencia:leads) {
+            if (referencia.getEmail().equals(email)){
+                return referencia;
+            }
+        }
+
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Não encontrado");
     }
 
 }
