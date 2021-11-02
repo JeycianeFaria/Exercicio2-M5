@@ -36,7 +36,7 @@ public class LeadService {
         for (LeadDto referencia:leads) {
             if (referencia.getEmail().equalsIgnoreCase(lead.getEmail())){
                 if (produtosDuplicados(referencia,lead)){
-                    throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,"Email já cadastrado");
+                    throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,"Produto já cadastrado para este email");
                 }
             }
         }
