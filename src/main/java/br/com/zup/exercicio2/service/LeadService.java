@@ -15,7 +15,6 @@ public class LeadService {
 
     private List<LeadDto> leads = new ArrayList<>();
 
-    //throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,"Email já cadastrado");
     public List<LeadDto> leadsCadastrados() {
         return leads;
     }
@@ -39,20 +38,36 @@ public class LeadService {
         }
     }
 
-
-    public void cadastrarLead(@RequestBody LeadDto lead) {
-
-        for (LeadDto referencia : leads) {
-            if (referencia.getEmail().equalsIgnoreCase(lead.getEmail())) {
-                if (produtosDuplicados(referencia, lead)) {
-                    throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Produto já cadastrado para este email");
-                } else {
-                    adicionarProdutos(referencia, lead);
-                }
+    public boolean leadCadastrado(LeadDto lead){
+        for (LeadDto referencia: leads) {
+            if (referencia.getEmail().equals(lead.getEmail())){
+                return true;
             }
         }
 
-        leads.add(lead);
+        return false;
+    }
+
+
+    public void cadastrarLead(@RequestBody LeadDto lead) {
+
+        if (leadCadastrado(lead)) {
+
+            for (LeadDto referencia : leads) {
+                if (referencia.getEmail().equalsIgnoreCase(lead.getEmail())) {
+                    if (produtosDuplicados(referencia, lead)) {
+                        throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Produto já cadastrado para este email");
+                    } else {
+                        adicionarProdutos(referencia, lead);
+                    }
+
+                }
+
+            }
+
+        }else {
+            leads.add(lead);
+        }
 
     }
 
