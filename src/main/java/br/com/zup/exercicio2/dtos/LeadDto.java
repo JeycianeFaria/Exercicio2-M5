@@ -54,7 +54,7 @@ public class LeadDto {
     }
 
 
-    public void adicionarProduto(ProdutoDto produtoNovo){
+    public void adicionarProduto(ProdutoDto produtoNovo) {
         listaProdutos.add(produtoNovo);
     }
 

@@ -15,8 +15,19 @@ public class LeadService {
 
     private List<LeadDto> leads = new ArrayList<>();
 
+
     public List<LeadDto> leadsCadastrados() {
         return leads;
+    }
+
+    public boolean leadCadastrado(LeadDto lead) {
+        for (LeadDto referencia : leads) {
+            if (referencia.getEmail().equals(lead.getEmail())) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public boolean produtosDuplicados(LeadDto leadCadastrado, LeadDto leadNovo) {
@@ -36,23 +47,11 @@ public class LeadService {
         for (ProdutoDto referencia : leadNovo.getListaProdutos()) {
             leadCadastrado.adicionarProduto(referencia);
         }
+
     }
-
-    public boolean leadCadastrado(LeadDto lead){
-        for (LeadDto referencia: leads) {
-            if (referencia.getEmail().equals(lead.getEmail())){
-                return true;
-            }
-        }
-
-        return false;
-    }
-
 
     public void cadastrarLead(@RequestBody LeadDto lead) {
-
         if (leadCadastrado(lead)) {
-
             for (LeadDto referencia : leads) {
                 if (referencia.getEmail().equalsIgnoreCase(lead.getEmail())) {
                     if (produtosDuplicados(referencia, lead)) {
@@ -60,13 +59,12 @@ public class LeadService {
                     } else {
                         adicionarProdutos(referencia, lead);
                     }
-
                 }
-
             }
 
-        }else {
+        } else {
             leads.add(lead);
+
         }
 
     }
