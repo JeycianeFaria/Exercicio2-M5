@@ -1,6 +1,7 @@
 package br.com.zup.exercicio2.service;
 
 import br.com.zup.exercicio2.dtos.LeadDto;
+import br.com.zup.exercicio2.dtos.ProdutoDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,22 +16,31 @@ public class LeadService {
     private List<LeadDto> leads = new ArrayList<>();
 
     //throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,"Email já cadastrado");
-    public void cadastrarLead(@RequestBody LeadDto lead){
-        leads.add(lead);
-    }
-
     public List<LeadDto> leadsCadastrados(){
         return leads;
     }
 
-    public LeadDto buscarLead(String email){
-        for (LeadDto referencia:leads) {
-            if (referencia.getEmail().equals(email)){
-                return referencia;
+    public boolean produtosDuplicados(LeadDto leadCadastrado, LeadDto leadNovo){
+        List<ProdutoDto> produtosCadastrados = leadCadastrado.getListaProdutos();
+        List<ProdutoDto> produtosNovos = leadNovo.getListaProdutos();
+        for (ProdutoDto referencia: produtosCadastrados){
+            if (produtosNovos.contains(referencia)){
+                return true;
             }
         }
 
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Não encontrado");
+        return false;
+    }
+
+    public void cadastrarLead(@RequestBody LeadDto lead){
+        for (LeadDto referencia:leads) {
+            if (referencia.getEmail().equalsIgnoreCase(lead.getEmail())){
+                if (produtosDuplicados(referencia,lead)){
+                    throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,"Email já cadastrado");
+                }
+            }
+        }
+        leads.add(lead);
     }
 
 }
