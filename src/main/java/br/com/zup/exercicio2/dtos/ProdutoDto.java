@@ -1,5 +1,8 @@
 package br.com.zup.exercicio2.dtos;
 
+
+import java.util.Objects;
+
 public class ProdutoDto {
 
     private String nomeDoProduto;
@@ -29,6 +32,15 @@ public class ProdutoDto {
 
     public void setValorDoProduto(double valorDoProduto) {
         this.valorDoProduto = valorDoProduto;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ProdutoDto that = (ProdutoDto) o;
+        return Double.compare(that.valorDoProduto, valorDoProduto) == 0 && Objects.equals(nomeDoProduto, that.nomeDoProduto);
     }
 
 }
