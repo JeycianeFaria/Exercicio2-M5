@@ -53,4 +53,9 @@ public class LeadDto {
         this.listaProdutos = listaProdutos;
     }
 
+
+    public void adicionarProduto(ProdutoDto produtoNovo){
+        listaProdutos.add(produtoNovo);
+    }
+
 }

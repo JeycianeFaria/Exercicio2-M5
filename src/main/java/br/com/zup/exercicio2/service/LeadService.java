@@ -14,18 +14,8 @@ public class LeadService {
 
     private List<LeadDto> leads = new ArrayList<>();
 
-
-
-    public void verificarEmail(String email){
-        for (LeadDto referencia:leads) {
-            if (referencia.getEmail().equals(email)){
-                throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,"Email já cadastrado");
-            }
-        }
-    }
-
+    //throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,"Email já cadastrado");
     public void cadastrarLead(@RequestBody LeadDto lead){
-        verificarEmail(lead.getEmail());
         leads.add(lead);
     }
 
