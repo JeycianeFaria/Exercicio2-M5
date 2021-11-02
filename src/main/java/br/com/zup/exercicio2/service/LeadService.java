@@ -16,15 +16,16 @@ public class LeadService {
     private List<LeadDto> leads = new ArrayList<>();
 
     //throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,"Email já cadastrado");
-    public List<LeadDto> leadsCadastrados(){
+    public List<LeadDto> leadsCadastrados() {
         return leads;
     }
 
-    public boolean produtosDuplicados(LeadDto leadCadastrado, LeadDto leadNovo){
+    public boolean produtosDuplicados(LeadDto leadCadastrado, LeadDto leadNovo) {
         List<ProdutoDto> produtosCadastrados = leadCadastrado.getListaProdutos();
         List<ProdutoDto> produtosNovos = leadNovo.getListaProdutos();
-        for (ProdutoDto referencia: produtosCadastrados){
-            if (produtosNovos.contains(referencia)){
+
+        for (ProdutoDto referencia : produtosCadastrados) {
+            if (produtosNovos.contains(referencia)) {
                 return true;
             }
         }
@@ -32,15 +33,27 @@ public class LeadService {
         return false;
     }
 
-    public void cadastrarLead(@RequestBody LeadDto lead){
-        for (LeadDto referencia:leads) {
-            if (referencia.getEmail().equalsIgnoreCase(lead.getEmail())){
-                if (produtosDuplicados(referencia,lead)){
-                    throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,"Produto já cadastrado para este email");
+    public void adicionarProdutos(LeadDto leadCadastrado, LeadDto leadNovo) {
+        for (ProdutoDto referencia : leadNovo.getListaProdutos()) {
+            leadCadastrado.adicionarProduto(referencia);
+        }
+    }
+
+
+    public void cadastrarLead(@RequestBody LeadDto lead) {
+
+        for (LeadDto referencia : leads) {
+            if (referencia.getEmail().equalsIgnoreCase(lead.getEmail())) {
+                if (produtosDuplicados(referencia, lead)) {
+                    throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Produto já cadastrado para este email");
+                } else {
+                    adicionarProdutos(referencia, lead);
                 }
             }
         }
+
         leads.add(lead);
+
     }
 
 }
